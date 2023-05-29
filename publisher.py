@@ -28,7 +28,7 @@ class Warehouse:
 
     def connect(self):
         self.opc_client.connect()
-        self.name = "Warehouse " + str(self.opc_client.get_node("ns=2;i=1").get_value())
+        self.name = "warehouse" + str(self.opc_client.get_node("ns=2;i=1").get_value())
     
     
 
@@ -56,10 +56,10 @@ class Warehouse:
     def calc_max_smoke(self):
         act_max=0
         for i in range(5):
-            act_smoke=self.opc_client.get_node('ns=2;s="MS'+str(i)+'"').get_child("2:Temperature").get_value()
+            act_smoke=self.opc_client.get_node('ns=2;s="MS'+str(i)+'"').get_child("2:Smoke").get_value()
             if act_max<act_smoke:
                 act_max=act_smoke
-        return round(act_max/5,2)
+        return act_max
     
     def mqtt_publish(self):
         act_avg_temperature=self.calc_avg_temperature()
@@ -67,7 +67,7 @@ class Warehouse:
         act_avg_polution = self.calc_avg_polution()
         act_max_smoke = self.calc_max_smoke()
 
-        mqtt_client.publish(self.name + "/avg_temerature", act_avg_temperature)
+        mqtt_client.publish(self.name + "/avg_temperature", act_avg_temperature)
         mqtt_client.publish(self.name + "/avg_humidity", act_avg_humidity)
         mqtt_client.publish(self.name + "/avg_polution", act_avg_polution)
         mqtt_client.publish(self.name + "/max_smoke", act_max_smoke)

@@ -21,6 +21,9 @@ def opc_server(port, id):
         stations[i].add_variable(2,'Humidity',round(np.random.normal(50,5,1)[0],2))
         stations[i].add_variable(2,'AirPollution',round(np.random.normal(100,20,1)[0],2))
         stations[i].add_variable(2,'Smoke',round(np.random.normal(5,10,1)[0],2))
+        if np.random.random()<0.5:
+            stations[i].add_variable(2,'Smoke',1500)
+
 
     server.start()
     print(f"Server started on port: {port} for warehouse {id}")

@@ -5,7 +5,7 @@ import time
 
 
 def on_messege(client,userdata,message):
-    print(f"Recive {message.payload.decode('utf-8')}")
+    print(f"{message.payload.decode('utf-8')}")
 
 
 
