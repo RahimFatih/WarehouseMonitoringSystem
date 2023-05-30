@@ -1,16 +1,16 @@
 import paho.mqtt.client as mqtt
 import time
-
+import datetime
 import random
 import opcua as ua
 import numpy as np
 
-max_temperature = 40
+max_temperature = 35
 min_temperature = 15
 
 max_humidity = 70
 max_pollution = 150
-max_smoke = 1000
+max_smoke = 1500
 
 #opc_client=ua.Client('opc.tcp://127.0.0.1:4840')
 #opc_client.connect()
@@ -72,21 +72,22 @@ class Warehouse:
         mqtt_client.publish(self.name + "/avg_polution", act_avg_polution)
         mqtt_client.publish(self.name + "/max_smoke", act_max_smoke)
  
-        
+        now = datetime.datetime.now()
+        now= now.strftime("%m/%d/%Y, %H:%M:%S")
         if  act_avg_temperature > max_temperature:
-            mqtt_client.publish(self.name + "/alarm", "Avg. temperature above max value")
+            mqtt_client.publish(self.name + "/alarm", now + " Avg. temperature above max value")
             
         if  act_avg_temperature < min_temperature:
-            mqtt_client.publish(self.name + "/alarm", "Avg. temperature bellow min value")
+            mqtt_client.publish(self.name + "/alarm", now + " Avg. temperature bellow min value")
             
         if  act_avg_humidity > max_humidity:
-            mqtt_client.publish(self.name + "/alarm", "Avg. humidity above max value, recommended dehumidifying procedure ")
+            mqtt_client.publish(self.name + "/alarm", now + " Avg. humidity above max value, recommended dehumidifying procedure ")
             
         if  act_avg_polution > max_pollution:
-            mqtt_client.publish(self.name + "/alarm", "Avg. air pollution above max value, recommended warehouse ventilation")
+            mqtt_client.publish(self.name + "/alarm", now + " Avg. air pollution above max value, recommended warehouse ventilation")
             
         if  act_max_smoke > max_smoke:
-            mqtt_client.publish(self.name + "/alarm", "Detected smoke! Fire hazard!")
+            mqtt_client.publish(self.name + "/alarm", now + " Detected smoke! Fire hazard!")
         
 warehouses=[Warehouse('opc.tcp://127.0.0.1:4840'),
             Warehouse('opc.tcp://127.0.0.1:4841'),

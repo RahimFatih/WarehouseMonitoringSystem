@@ -18,10 +18,16 @@ def opc_server(port, id):
     for i in range(5):
         stations.append(objects.add_object('ns=2;s="MS'+str(i)+'"', "Measuring station " + str(i)))
         stations[i].add_variable(2,'Temperature',round(np.random.normal(25,3,1)[0],2))
+        print(np.random.random())
+
         stations[i].add_variable(2,'Humidity',round(np.random.normal(50,5,1)[0],2))
+        if np.random.random()<0.1:
+            stations[i].add_variable(2,'Humidity',83)
         stations[i].add_variable(2,'AirPollution',round(np.random.normal(100,20,1)[0],2))
+        if np.random.random()<0.1:
+            stations[i].add_variable(2,'AirPollution',180)
         stations[i].add_variable(2,'Smoke',round(np.random.normal(5,10,1)[0],2))
-        if np.random.random()<0.5:
+        if np.random.random()<0.1:
             stations[i].add_variable(2,'Smoke',1500)
 
 
@@ -30,10 +36,20 @@ def opc_server(port, id):
     try:
         while True:
             for i in range(5):
-                stations[i].get_child("2:Temperature").set_value(round(np.random.normal(25,3,1)[0],2))
-                stations[i].get_child("2:Humidity").set_value(round(np.random.normal(50,5,1)[0],2))
-                stations[i].get_child("2:AirPollution").set_value(round(np.random.normal(100,20,1)[0],2))
-                stations[i].get_child("2:Smoke").set_value(round(np.random.normal(700,100,1)[0],2))
+                temp_val = round(np.random.normal(30,5,1)[0],2)
+                stations[i].get_child("2:Temperature").set_value(temp_val)
+
+                temp_val = round(np.random.normal(60,25,1)[0],2)
+                stations[i].get_child("2:Humidity").set_value(temp_val)
+
+
+                temp_val = round(np.random.normal(140,40,1)[0],2)
+                stations[i].get_child("2:AirPollution").set_value(temp_val)
+                
+
+                temp_val = round(np.random.normal(1000,300,1)[0],2)
+
+                stations[i].get_child("2:Smoke").set_value(temp_val)
             #temperature = round(random.uniform(-1,1),2)
             #temp.set_value(temperature)
             #print("New temperature: "+str(temp.get_value()))
